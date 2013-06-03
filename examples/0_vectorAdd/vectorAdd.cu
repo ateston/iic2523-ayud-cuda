@@ -125,11 +125,29 @@ main(void)
         exit(EXIT_FAILURE);
     }
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
     // Launch the Vector Add CUDA Kernel
     int threadsPerBlock = 256;
     int blocksPerGrid =(numElements + threadsPerBlock - 1) / threadsPerBlock;
     printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
+
+    cudaEventRecord(start, 0);
+    
     vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, numElements);
+
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+
+    float elapsedTime;
+    cudaEventElapsedTime(&elapsedTime, start, stop);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+
+    printf("Execution Time %f ms \n", elapsedTime);
+
     err = cudaGetLastError();
 
     if (err != cudaSuccess)
@@ -198,10 +216,4 @@ main(void)
 
     printf("Done\n");
     return 0;
-}
-
-void startTimer(unsigned int timer, cudaEvent_t start) 
-{
-  cutilCheckError(cutStartTimer(timer)); //CPU timer
-  cutilSafeCall(cudaEventRecord(start, 0)); //GPU timer
 }
