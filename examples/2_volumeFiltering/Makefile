@@ -108,10 +108,10 @@ endif
 # OpenGL specific libraries 
 ifneq ($(DARWIN),)
     # Mac OSX specific libraries and paths to include
-    LIBPATH_OPENGL  := -L../../common/lib/darwin -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -lGL -lGLU ../../common/lib/darwin/libGLEW.a
+    LIBPATH_OPENGL  := -L../common/lib/darwin -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -lGL -lGLU ../common/lib/darwin/libGLEW.a
 else
     # Linux specific libraries and paths to include
-    LIBPATH_OPENGL  := -L../../common/lib/linux/$(OS_ARCH) -L/usr/X11R6/lib -lGL -lGLU -lX11 -lXi -lXmu -lglut ../../common/lib/linux/$(OS_ARCH)/libGLEW.a
+    LIBPATH_OPENGL  := -L../common/lib/linux/$(OS_ARCH) -L/usr/X11R6/lib -lGL -lGLU -lX11 -lXi -lXmu -lglut ../common/lib/linux/$(OS_ARCH)/libGLEW.a
 endif
 
 # Debug build flags
@@ -124,7 +124,7 @@ else
 endif
 
 # Common includes and paths for CUDA
-INCLUDES      := -I$(CUDA_INC_PATH) -I. -I.. -I../../common/inc
+INCLUDES      := -I$(CUDA_INC_PATH) -I. -I.. -I../common/inc
 LDFLAGS       += $(LIBPATH_OPENGL)
 
 # Target rules
